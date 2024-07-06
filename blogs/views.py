@@ -12,10 +12,6 @@ def blog(request):
     
     # return render(request, 'blog.html')
     
-def about(request):
-    context = {"title": 'About Us'}
-    return render(request, 'about.html', context)
-    
 def contact(request):
     context = {"title": 'Contact Us'}
     return render(request, 'contact.html', context)

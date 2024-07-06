@@ -26,3 +26,8 @@ def register(request):
     else:
         form = UserRegisterForm()
     return render(request, 'registration/register.html', {'form': form})
+
+    
+def about(request):
+    context = {"title": 'About Us'}
+    return render(request, 'about.html', context)

@@ -6,6 +6,7 @@ class User(models.Model):
     email = models.EmailField()
     password = models.CharField(max_length=100)
     date_joined = models.DateTimeField(auto_now_add=True)
+    about = models.TextField()
 
     def __str__(self):
-        return self.username
+        return "El usuario activo es "+ self.username
