@@ -16,7 +16,7 @@
         <!-- Barra de navegación responsiva-->
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <div class="container">
-                <a class="navbar-brand" href="{% url 'index' %}">Blog de Viajes</a>
+                <a class="navbar-brand" href="{% url 'index' %}">SuperBlog!</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
@@ -25,15 +25,15 @@
                         <li class="nav-item"><a class="nav-link" href="{% url 'contact' %}">Contacto</a></li>
                         {% if user.is_authenticated %}
                         <li class="nav-item">
-                            <div class="nav-link">Bienvenido, {{ user.username }}
+                            {% comment %} <div class="nav-link">Bienvenido, {{ user.username }} {% endcomment %}
                             <form method="post" class="nav-link" action="{% url 'logout' %}">
                                 {% csrf_token %}
-                                <button type="submit">Logout</button>
+                                <button type="submit btn">Logout</button>
                             </form>
                         </div>
                         </li>
                         {% else %}
-                        <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Iniciar sesión</a></li>
+                        <li class="nav-item"><a class="nav-link btn" href="{% url 'login' %}">Iniciar sesión</a></li>
                         {% endif %}
                         </ul>
                     </ul>
@@ -42,34 +42,70 @@
         </nav>
         {% block hero %}
         <!-- Encabezado-->
-        <header class="py-5 bg-light border-bottom mb-4"  style="background-image: url('https://www.pacificinsurance.com.my/wp-content/uploads/2017/08/claim-travel.jpg'); background-repeat: no-repeat; background-size: cover ;background-position: center;">
+        <header class="py-5 bg-light border-bottom mb-4"  style="background-image: url('https://media.istockphoto.com/id/1094716930/es/foto/edificio-fondo-de-desenfoque-de-lobby-de-negocios-con-borrosa-cristal-pared-transparente.webp?s=2048x2048&w=is&k=20&c=Hi32o0tLPVM56IQJm9figdCXXHcc69xLMTPQbSQO0UQ='); background-repeat: no-repeat; background-size: cover ;background-position: center;">
             <div class="container">
                 <div class="text-center my-5 light ">
                     <h1 class="fw-bolder text-greenhouse">¡Bienvenido a nuestro Blog de Viajes {{user.username}}!</h1>
-                    <p class="lead mb-0 text-white">Explora el mundo con nosotros y descubre lugares increíbles</p>
+                    <p class="lead mb-0">Explora el mundo con nosotros y descubre lugares increíbles</p>
                 </div>
             </div>
             </div>
         </header>
+
         {% endblock hero %}
         {% block login %}
         {% endblock login %}
         {% block content %}
-        <div class="container">
+        <div class="container" id="finder">
+            {% if user.is_authenticated and blogs|length == 0 %}
+            <a href="{% url 'new_blog' %}" class="btn btn-success">Nuevo</a>
+            {% else %}            
+            {% if not request.resolver_match.url_name == 'login' %}
+                <!-- Barra lateral-->
+                <div class="">
+                    <!-- Widget de búsqueda-->
+                    <div class="card mb-4">
+                        <div class="card-header">Buscar</div>
+                        <div class="card-body">
+                            <form method="get" action="{% url 'index' %}">
+                                <div class="input-group">
+                                    {{ form.title }}
+                                    <button class="btn btn-primary" id="button-search" type="submit">Ir</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+            {% endif %}
             {% for blog in blogs %}
+            {%if user.is_authenticated %}
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <a href="{% url 'new_blog' %}" class="btn btn-success">Nuevo</a>
+                            <a href="{% url 'edit_blog' blog.id %}" class="btn btn-primary">Editar</a>
+                            <a href="{% url 'delete_blog' blog.id %}" class="btn btn-danger">Borrar</a>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
             <div class="row">
                 <!-- Contenido principal-->
-                <div class="col-lg-8">
+                <div class="col-lg-12">
                     <!-- Post de ejemplo-->
-                     {% block article %}
-                     {% endblock article %}
+                    {% block article %}
+                    {% endblock article %}
                     <article>
                         <header class="mb-4">
                             <h2 class="fw-bolder mb-1">{{ blog.title }}</h2>
                             <div class="text-muted fst-italic mb-2">Publicado el {{ blog.created_at }}</div>
                             
                         </header>
+                        {% if blog.image %}
                         <figure class="mb-4"><img class="img-fluid rounded" src="{{ blog.image.url }}" alt="Montañas" /></figure>
+                        {% endif %}
                         <section class="mb-5">
                             <p class="fs-5 mb-4">{{ blog.content }}</p>
                         </section>
@@ -81,40 +117,26 @@
                         <div class="card bg-light">
                             <div class="card-body">
                                 <!-- Comment form-->
-                                <form class="mb-4"><textarea class="form-control" rows="3" placeholder="Join the discussion and leave a comment!"></textarea></form>
-                                <!-- Comment with nested comments-->
-                                <div class="d-flex mb-4">
-                                    <!-- Parent comment-->
-                                    <div class="flex-shrink-0"><img class="rounded-circle" src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" alt="..." /></div>
-                                    <div class="ms-3">
-                                        <div class="fw-bold">Commenter Name</div>
-                                        If you're going to lead a space frontier, it has to be government; it'll never be private enterprise. Because the space frontier is dangerous, and it's expensive, and it has unquantified risks.
-                                        <!-- Child comment 1-->
-                                        <div class="d-flex mt-4">
-                                            <div class="flex-shrink-0"><img class="rounded-circle" src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" alt="..." /></div>
-                                            <div class="ms-3">
-                                                <div class="fw-bold">Commenter Name</div>
-                                                And under those conditions, you cannot establish a capital-market evaluation of that enterprise. You can't get investors.
-                                            </div>
-                                        </div>
-                                        <!-- Child comment 2-->
-                                        <div class="d-flex mt-4">
-                                            <div class="flex-shrink-0"><img class="rounded-circle" src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" alt="..." /></div>
-                                            <div class="ms-3">
-                                                <div class="fw-bold">Commenter Name</div>
-                                                When you put money directly to a problem, it makes a good headline.
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                                {% for comment in comments %}
                                 <!-- Single comment-->
+                                {% if comment.blog.id == blog.id %}
                                 <div class="d-flex">
-                                    <div class="flex-shrink-0"><img class="rounded-circle" src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" alt="..." /></div>
+                                    <div class="flex-shrink-0">
+                                        {% if user.username == comment.author.username %}
+                                        <img class="rounded-circle" src="{{ user.photo.url }}" alt="..." style="max-width: 50px;" />
+                                        {% else %}
+                                        <img class="rounded-circle" src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" alt="..." />
+                                        {% endif %}
+                                    </div>
                                     <div class="ms-3">
-                                        <div class="fw-bold">Commenter Name</div>
-                                        When I look at the universe and all the ways the universe wants to kill us, I find it hard to reconcile that with statements of beneficence.
+                                        <div class="fw-bold">{{ comment.author.username }}</div>
+                                        {{comment.content}}
+                                        <p class="text-muted">{{ comment.created_at }}</p>
                                     </div>
                                 </div>
+                                {% endif %}
+                                {% endfor %}
+                                <a href="{% url 'blog_detail' blog.id %}" class="btn btn-dark justify-content-end">Comentar</a>
                             </div>
                         </div>
                     </section>
@@ -136,49 +158,10 @@
 
 
                 </div>
+                {% endfor %}
                 
-                <!-- Barra lateral-->
-                <div class="col-lg-4">
-                    <!-- Widget de búsqueda-->
-                    <div class="card mb-4">
-                        <div class="card-header">Buscar</div>
-                        <div class="card-body">
-                            <div class="input-group">
-                                <input class="form-control" type="text" placeholder="Buscar..." aria-label="Buscar..." aria-describedby="button-search" />
-                                <button class="btn btn-primary" id="button-search" type="button">Ir</button>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Widget de categorías-->
-                    <div class="card mb-4">
-                        <div class="card-header">Categorías</div>
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-sm-6">
-                                    <ul class="list-unstyled mb-0">
-                                        <li><a href="#!">Aventura</a></li>
-                                        <li><a href="#!">Cultura</a></li>
-                                        <li><a href="#!">Gastronomía</a></li>
-                                    </ul>
-                                </div>
-                                <div class="col-sm-6">
-                                    <ul class="list-unstyled mb-0">
-                                        <li><a href="#!">Playas</a></li>
-                                        <li><a href="#!">Ciudades</a></li>
-                                        <li><a href="#!">Naturaleza</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Widget de barra lateral-->
-                    <div class="card mb-4">
-                        <div class="card-header">Sobre Nosotros</div>
-                        <div class="card-body">Somos un grupo de viajeros apasionados por explorar el mundo y compartir nuestras experiencias. Únete a nosotros en esta aventura.</div>
-                    </div>
-                </div>
             </div>
-            {% endfor %}
+            
         </div>
         {% endblock content %}
         
@@ -186,7 +169,7 @@
         
         <!-- Pie de página-->
         <footer class="py-5 bg-dark">
-            <div class="container"><p class="m-0 text-center text-white">Derechos de autor &copy; Blog de Viajes 2023</p></div>
+            <div class="container"><p class="m-0 text-center text-white">Trabajo final CoderHouse &copy; SuperBlog</p></div>
         </footer>
         <!-- Bootstrap core JS-->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>

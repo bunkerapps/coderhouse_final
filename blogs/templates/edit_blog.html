@@ -2,10 +2,13 @@
 {% block hero %}
 {% endblock hero %}
 {% block content %}
+<div class="container">    
     <h2>Editar Blog</h2>
-    <form method="POST">
+    <form method="POST" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form.as_p }}
-        <button type="submit">Guardar</button>
+        <button type="submit">Guardar cambios</button>
+        {% comment %} <a href="{% url 'blog_detail' blog.id %}">Cancelar</a> {% endcomment %}
     </form>
+</div>
 {% endblock content %}

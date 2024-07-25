@@ -1,6 +1,23 @@
 {% extends "index.html" %}
 
 {% block content %}
-    <h2>About</h2>
-    <p>{{user.username}}</p>
+
+{% load static %}
+<div class="card mt-5 container">
+    <div class="card-header">
+        <h2>About</h2>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-4">
+                <img src="{% static "/img/yo.jpg" %}" class="img-fluid rounded-circle col-lg-6" alt="Profile Picture">
+            </div>
+            <div class="col-md-8">
+                <h3>Diego S. Pacheco</h3>
+                <p><strong>Email:</strong> diego@bunkerapps.net</p>
+                <p>Soy {{ user.first_name }} y actualmente estoy presentando mi trabajo final del curso de Python en CoderHouse. A lo largo de este curso, he desarrollado mis habilidades en programación y he aprendido a resolver problemas complejos utilizando Python. Este proyecto final es una muestra de mi dedicación y esfuerzo, y refleja mi pasión por la tecnología y mi compromiso con el aprendizaje continuo en el campo del desarrollo de software.</p>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
