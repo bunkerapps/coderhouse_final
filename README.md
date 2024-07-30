@@ -32,27 +32,44 @@ SuperBlog es un proyecto final del curso de Python en CoderHouse. Este proyecto 
     python manage.py runserver
     ```
 
-## Uso
+## Navegación y Uso
 
-- Accede a la página principal en `http://127.0.0.1:8000/`.
-- Regístrate o inicia sesión para crear, editar y eliminar publicaciones.
-- Navega a las diferentes secciones del blog utilizando la barra de navegación.
+### Página de Inicio
 
-## Estructura de Directorios
+La página de inicio muestra una lista de las publicaciones más recientes. Puedes navegar a las publicaciones más antiguas desplazandote hacia los más antiguos conforme bajas con el scroll.
 
-- `blogs/`: Contiene la lógica principal del blog, incluyendo modelos, vistas, formularios y URLs.
-- `media/`: Almacena las imágenes subidas por los usuarios.
-- `static/`: Contiene archivos estáticos como CSS, JavaScript e imágenes.
-- `templates/`: Contiene las plantillas HTML para las diferentes vistas del blog.
-- `users/`: Contiene la lógica relacionada con la gestión de usuarios, incluyendo formularios y vistas.
+![Página de Inicio](screenshots/home.png)
 
-## Contribuciones
+### Registro e Inicio de Sesión
 
-Las contribuciones son bienvenidas. Por favor, abre un issue o envía un pull request para discutir cualquier cambio que te gustaría hacer.
+Los usuarios pueden registrarse y acceder a sus cuentas utilizando los enlaces en la barra de navegación.
 
-## Licencia
+![Registro](screenshots/register.png)
 
-Este proyecto está licenciado bajo los términos de la licencia MIT. Consulta el archivo [LICENSE](LICENSE) para más detalles.
+
+### Perfil de Usuario
+
+Cada usuario tiene un perfil donde puede ver y editar su información personal.
+
+![Perfil de Usuario](screenshots/profile.png)
+
+### Editar Perfil
+
+Los usuarios pueden editar su perfil, incluyendo su nombre, email, foto de perfil y más.
+
+![Editar Perfil](screenshots/edit_profile.png)
+
+### Crear y Editar Publicaciones
+
+Los usuarios autenticados pueden crear nuevas publicaciones y editar o eliminar las existentes. Los usuarios NO autenticados en cambio sólo podrán utilizar el campo de búsqueda.
+
+![Crear Publicación](screenshots/create_post.png)
+
+
+## Comentarios
+
+Los comentarios son bienvenidos! En cada entrada individual los usuarios pueden agregar sus propios comentarios sobre el viaje y comentar experiencias propias o aprovechar ese campo para comunicarse con el creador del POST.
+
 
 ## Contacto
 
