@@ -1,0 +1,32 @@
+{% extends "index.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">Perfil de {{ user.username }}</h4>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            {% if user.photo %}
+                                <img src="{{ user.photo.url }}" class="img-fluid rounded-circle mb-3" alt="Foto de perfil">
+                            {% else %}
+                                <img src="https://via.placeholder.com/150" class="img-fluid rounded-circle mb-3" alt="Foto de perfil">
+                            {% endif %}
+                        </div>
+                        <div class="col-md-8">
+                            <p><strong>Email:</strong> {{ user.email }}</p>
+                            <p><strong>Nombre:</strong> {{ user.first_name }} {{ user.last_name }}</p>
+                            <p><strong>Sobre mí:</strong> {{ user.about }}</p>
+                            <a href="{% url 'edit_profile' %}" class="btn btn-primary">Editar Perfil</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

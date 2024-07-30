@@ -6,6 +6,8 @@ from django.core.mail import send_mail
 from django.contrib import messages
 from django.views.generic import TemplateView
 from django.conf import settings
+from django.contrib.auth.decorators import login_required
+from users.forms import UserEditForm
 
 
 User = get_user_model()
@@ -151,3 +153,18 @@ def delete_blog(request, blog_id):
         blog.delete()
         return redirect('index')
     return render(request, 'delete_blog.html', {'blog': blog})
+
+@login_required
+def edit_profile(request):
+    if request.method == 'POST':
+        form = UserEditForm(request.POST, request.FILES, instance=request.user)
+        if form.is_valid():
+            form.save()
+            return redirect('profile')  # Redirige a la vista del perfil del usuario
+    else:
+        form = UserEditForm(instance=request.user)
+    return render(request, 'users/edit_profile.html', {'form': form})
+
+@login_required
+def profile(request):
+    return render(request, 'users/profile.html')
